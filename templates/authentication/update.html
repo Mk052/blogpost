@@ -1,0 +1,15 @@
+{% extends 'authentication/index.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="signin-section">
+        <h1>Update Blog in {{ blog.title }}  {{ blog.id }}</h1>
+        <form method="POST">
+        {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+        <a href="{% url 'all_blog' %}">Cancel</a>
+    </div>
+</div>
+{% endblock %}
