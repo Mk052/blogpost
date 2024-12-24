@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Default heart style */
+        .fa-heart {
+            font-size: 24px;
+            cursor: pointer;
+            color: gray;
+        }
+
+        /* Filled red color */
+        .filled {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="/">My Website</a>
+                <div>
+                    <a class="btn btn-outline-primary me-2" href="{% url 'home' %}">Home</a>
+                    {% if request.user.is_authenticated %}
+                        <!-- If the user is logged in, show the Logout button on the Home page but not on the login page -->
+                        <a class="btn btn-outline-primary me-2" href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <!-- If the user is NOT logged in, show the Login button except on the login page -->
+                        <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        {% block content %}
+        <h1>Welcome to My Website!</h1>
+        <p>This is a basic template. Customize it to fit your needs.</p>
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 My Website. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const heartIcon = document.getElementById('heartIcon');
+
+        heartIcon.addEventListener('click', () => {
+            if (heartIcon.classList.contains('fa-regular')) {
+                // Change to filled heart
+                heartIcon.classList.remove('fa-regular');
+                heartIcon.classList.add('fa-solid', 'filled');
+            } else {
+                // Change back to outline heart
+                heartIcon.classList.remove('fa-solid', 'filled');
+                heartIcon.classList.add('fa-regular');
+            }
+        });
+    </script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
