@@ -1,0 +1,20 @@
+{% extends 'authentication/base.html'%}
+
+{% block content %}
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <p>Email:<input type="email" name="email" required/></p>
+        <p>Password:<input type="password" name="password" required/></p>
+        <button type="submit">login</button>
+    </form>
+    {% if error1 %}
+        <br/>
+        {{ error1 }}
+        <br/>
+
+    {% endif %}
+    <br/>
+        <p>not register ?</p>
+        <button><a href="{% url 'signup' %}">Signup</a></button>
+{% endblock %} 
+    

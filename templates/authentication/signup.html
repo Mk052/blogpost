@@ -1,0 +1,21 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+        <div id="main">
+            <form method="post">
+                {% csrf_token %}
+                    <!-- {{ form.as_p }} -->
+                    <p>email:{{ form.email }}</p>  
+                      
+                    <p>password:{{ form.password1 }}</p>
+                      
+                    <p>confirm password:{{ form.password2 }}</p>
+                      
+                <button type="submit">submit</button>
+            </form>
+            <br/>
+            <p>Already a have account?</p>
+            <button><a href="{% url 'login' %}">Login</a></button>
+        </div>
+{% endblock %}
+    
