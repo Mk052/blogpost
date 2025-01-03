@@ -6,7 +6,7 @@ from authentication.models import User, Blogpost, Comment
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'email', 'password1', 'password2']
+        fields = ['full_name', 'email', 'password1', 'password2', 'is_email_verified']
 
 
 class BlogPostForm(forms.ModelForm):
@@ -24,3 +24,6 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'row':3, 'placeholder': 'Add a comment.....'})
+        }
