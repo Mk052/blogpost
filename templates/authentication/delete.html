@@ -1,0 +1,19 @@
+{% extends 'authentication/base.html' %}
+	
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+        {{ form.as_p }}
+        <h1> Confirm deletion </h1>
+        <h3 style="color:red";>Are you sure you want to Delete this blog post</h3>
+        <button type="submit">Confirm Delete</button>
+        <a href="{% url 'all_blog' %}"><button type="submit">Cancel</button></a>
+    </form>
+
+
+
+
+{% endblock %}
+
+
