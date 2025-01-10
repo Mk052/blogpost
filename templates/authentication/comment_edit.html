@@ -1,0 +1,14 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="signin-section">
+        <h1>comment of {{ comment.title }}</h1>
+        <form method="POST">
+        {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
