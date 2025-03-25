@@ -1,0 +1,20 @@
+{% extends 'authentication/base.html' %}
+	
+{% block content %}
+<table class="table">
+	<thead>
+	  <tr>
+		<th scope="col">#</th>
+		<th scope="col">category</th>
+	  </tr>
+	</thead>
+	<tbody>
+	{% for category in categorys %}
+	  <tr>
+	<th scope="row">{{ category.id }}</th>
+		<td><a href="{% url 'blogs' category.id %}">{{ category.name }}</a></td>
+	  </tr>
+	{% endfor %}
+	</tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+
+<br>
+<div class="container" style="border: 2px solid grey; padding: 12px; border-radius: 5px;">
+  {% if my_blog %}  
+  <div class="row"> 
+    {% for blog in my_blog %} 
+    <div class="row">
+      <div class="col bg-light" style=" padding: 25px;">
+        <h5 class="card-title">{{ blog.title }}</h5>
+            <p class="card-text">
+                <strong>Author:</strong> {{ blog.user.email }}<br>
+                <strong>Category:</strong> {{ blog.category.name }}<br>
+                <strong>Created on:</strong> {{ blog.created_at|date:"M d, Y H:i" }}
+            </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" style=" padding: 40px;">
+        <p class="card-text">{{ blog.content|truncatechars:150 }}</p>
+        <a href="{% url 'view_post' blog.id %}" class="btn btn-primary">View Full Blog</a>
+        {% if request.user == blog.user %}  
+        <a href="{% url 'update_blog' blog.id %}" class="btn btn-primary">Edit</a>
+        <form action="{% url 'delete_blog' blog.id %}" method="POST" class="d-inline" onsubmit="return confirmDelete()">
+        {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    {% endif %}
+      </div>
+    </div> 
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">No blogs available.</p>
+    {% endif %}
+</div>
+<script>
+  function confirmDelete(){
+    return confirm("Are you sure you want to Delete this blog post")}
+</script>  
+{% endblock %}    

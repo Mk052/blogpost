@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog List</title>
+    <title>Blog Listtttt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -12,10 +12,12 @@
       <div class="container">
           <a class="navbar-brand" href="/">My Website.</a>
           <div>
-              <a class="btn btn-outline-primary me-2" href="{% url 'home' %}">Home</a>
+              <a class="btn btn-outline-primary me-2" href="{% url 'all_blog' %}">Home</a>
               {% if request.user.is_authenticated %}
                   <!-- If the user is logged in, show the Logout button on the Home page but not on the login page -->
+                  <a class="btn btn-outline-primary me-2" href="{% url 'my_blog' %}">My Blog</a>
                   <a class="btn btn-outline-primary me-2" href="{% url 'logout' %}">Logout</a>
+                  <a  class="btn btn-outline-primary me-2" href="{% url 'reset_password' %}">Reset Password</a>
               {% else %}
                   <!-- If the user is NOT logged in, show the Login button except on the login page -->
                   <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
@@ -26,7 +28,52 @@
   </nav>
 </header>
 <br>
+
+
 <br>
+<div class="container">
+  <div class="row">
+      <form method="GET" action="{% url 'all_blog' %}"> 
+          <!-- Category Column -->
+          <div class="col-md-4">
+              <label>Category: </label>
+              <select class="form-select" name="category">
+                  <option value="All"{% if selected_category == 'All' %}selected{% endif %}>All</option>
+                  {% for category in categories %}
+                      <option value="{{ category.name }}"{% if category.name == selected_category %}selected{% endif %}>{{ category.name }}</option>
+                  {% endfor %} 
+              </select> 
+          </div>
+
+          <!-- Start Date Column -->
+          <div class="col-md-4">
+              <label>Start Date: </label>
+              <input class="form-control" type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+          </div>
+
+          <!-- End Date Column -->
+          <div class="col-md-4">
+              <label>End Date: </label>
+              <input class="form-control" type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+          </div>
+
+          <!-- Submit Button -->
+          <div class="col-12 mt-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </form>  
+  </div>
+</div>
+<br>
+<br>
+<div class="container mt-5">
+  {% if messages %}
+  {% for message in messages %}
+  <h2>Email Verification</h2>
+  <p>{{ message }}</p>
+  {% endfor %}
+  {% endif %}
+</div>
 <div class="container" style="border: 2px solid grey; padding: 12px; border-radius: 5px;">
   {% if blogs %}  
   <div class="row"> 
@@ -45,13 +92,38 @@
       <div class="col" style=" padding: 40px;">
         <p class="card-text">{{ blog.content|truncatechars:150 }}</p>
         <a href="{% url 'view_post' blog.id %}" class="btn btn-primary">View Full Blog</a>
+        {% if request.user == blog.user or request.user.is_superuser %}  
+        <a href="{% url 'update_blog' blog.id %}" class="btn btn-primary">Edit</a>
+        <form action="{% url 'delete_blog' blog.id %}" method="POST" class="d-inline" onsubmit="return confirmDelete()">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    {% endif %}
       </div>
     </div> 
     {% endfor %}
     {% else %}
     <p class="text-muted">No blogs available.</p>
-    {% endif %}
+  {% endif %}
+</div>     
+<br>
+<div class="paginator d-grid gap-2 d-md-flex justify-content-md-end">
+  {% if blogs.has_previous %}
+    <a href="?page={{ blogs.previous_page_number }}" class="btn btn-primary">Previous<a>
+  {% else %}
+    <a href="?page={{ blogs.num_pages }}" class="btn btn-secondary btn-lg disabled" tabindex="-1" role="button" aria-disabled="true">Previous</a>
+  {% endif %} 
+  <span>{{ blogs.number }} of {{ blogs.paginator.num_pages }}</span>
+  {% if blogs.has_next %}
+    <a href="?page={{ blogs.next_page_number }}" class="btn btn-primary">Next<a> 
+  {% else %}
+    <a href="?page={{ blogs.num_pages }}" class="btn btn-secondary btn-lg disabled" tabindex="-1" role="button" aria-disabled="true">Next</a>
+  {% endif %}   
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  function confirmDelete(){
+    return confirm("Are you sure you want to Delete this blog post")}
+</script>  
 </body>
 </html>

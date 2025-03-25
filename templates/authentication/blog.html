@@ -1,0 +1,29 @@
+{% extends 'authentication/base.html' %}
+	
+{% block content %}
+<h3>Blog in {{ category.name }}</h3>
+
+	  <button><a href="{% url 'create_blog' category_id=category.id %}">Create New Blog</a></button>
+	  <ul>
+		<span style="border-bottom: 1px solid #000; padding-bottom: 2px;">
+		{% for blog in blogs %}
+		<li>
+			<h2>{{ blog.title }}</h2>
+			<p>{{ blog.content }}</p>
+			<a href="{% url 'update_blog' blog.id %}"><button type="submit">Edit</button></a>
+			<a href="{% url 'delete_blog' blog.id %}"><button type="submit">Delete</button></a>
+			<a href="{% url 'comment_blog' blog.id %}"><button type="submit">Comment</button></a>
+			{% if liked %}
+			<a href="{% url 'like_blog' blog.id %}">
+			<i class="fa-regular fa-heart filled fa-solid" id="heartIcon">Like</i></a>
+			{% else %}
+			<a href="{% url 'like_blog' blog.id %}">
+			<i class="fa-regular fa-heart " id="heartIcon">Like</i></a>
+			{% endif %}
+			<br>Like Counts: {{ blog.total_like }}
+		</li>
+		<br/>
+		{% endfor %}
+		<span style="border-bottom: 1px solid #000; padding-bottom: 2px;"></span>
+	  </ul>
+{% endblock %}

@@ -2,20 +2,34 @@
 
 {% block content %}
         <div id="main">
-            <form method="post">
+            {% if messages %}
+            {% for message in messages %}
+            <div>
+                {{ message}}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form method="POST">
                 {% csrf_token %}
                     <!-- {{ form.as_p }} -->
-                    <p>email:{{ form.email }}</p>  
+                    <p>Full Name:{{ form.full_name }}</p>
+
+                    <p>Email:{{ form.email }}</p>  
                       
-                    <p>password:{{ form.password1 }}</p>
+                    <p>Password:{{ form.password1 }}</p>
                       
-                    <p>confirm password:{{ form.password2 }}</p>
+                    <p>Confirm Password:{{ form.password2 }}</p>
                       
-                <button type="submit">submit</button>
+                <button type="submit">Submit</button>
             </form>
             <br/>
             <p>Already a have account?</p>
             <button><a href="{% url 'login' %}">Login</a></button>
         </div>
+        {% if messages %}
+            {% for i in messages %}
+            <p>{{ i }}</p>
+            {% endfor %}
+        {% endif %}    
 {% endblock %}
     
